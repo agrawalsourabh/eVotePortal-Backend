@@ -10,3 +10,6 @@ artifacts
 
 #Notes
 Notes
+
+#config file
+hardhat.config.js

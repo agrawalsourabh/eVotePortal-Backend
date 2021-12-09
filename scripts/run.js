@@ -31,10 +31,27 @@ async function main() {
   let voteCountA = await eVoteContract.getVoteCount("dominos");
   let voteCountB = await eVoteContract.getVoteCount("MOD");
 
-  // Test cast vote - with already voted address 
-  voteTxn = await eVoteContract.castVote("dominos");
-  await voteTxn;
-  console.log("Vote casted Txn: " + voteTxn.hash);
+  try{
+     //check add participant method
+    await eVoteContract.connect(randomPerson).addParticipant("pizza hut");
+    await eVoteContract.connect(randomPerson).addParticipant("MOD");
+  }
+  catch(error){
+    console.error(error.message);
+  }
+
+  try{
+    // Test cast vote - with already voted address 
+    voteTxn = await eVoteContract.castVote("dominos");
+    await voteTxn;
+    console.log("Vote casted Txn: " + voteTxn.hash);
+  }
+  catch(error){
+
+    console.error(error.message);
+
+    console.log("checking: " + error.message.includes('You already voted'));
+  }
 
   console.log("Dominos vote: " + voteCountA);
   console.log("MOD vote: " + voteCountB);
